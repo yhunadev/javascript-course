@@ -169,3 +169,4 @@ console.log('Comparisons too: $(5>3}');
 console.log(`Just a regular string`);
 console.log(`String');
 console.log(`String with a ${'variable'}`);
+console.log(`String with a ${2 + 3}`);
