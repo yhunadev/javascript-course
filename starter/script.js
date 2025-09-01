@@ -605,20 +605,220 @@
 // console.log(`\nAfter updates:`);
 // console.log(user.getSummary());
 
-// PART 4
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>JavaScript DOM Manipulation</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <h1>JavaScript DOM Manipulation</h1>
-    <p class="message">Start interacting!</p>
-    <button id="btn">Click Me!</button>
-    <input type="text" class="guess" placeholder="Enter text" />
-    <div class="score">Score: <span class="score-value">0</span></div>
 
-    <script src="script.js"></script>
-  </body>
-</html>
+////////////////////////////////////////////////////////////////////
+// Selecting DOM Elements
+
+// // querySelector - works with any CSS selector
+// const message = document.querySelector(".message"); 
+// const button = document.querySelector("#btn"); 
+// const heading = document.querySelector("h1"); 
+// const input = document.querySelector(".guess"); 
+
+// console.log(message);
+// console.log(button);
+// console.log(heading);
+// console.log(input);
+
+// // Different selector types
+// document.querySelector(".className"); 
+// document.querySelector("#idName"); 
+// document.querySelector("tagName"); 
+// document.querySelector('[type="text"]'); 
+// document.querySelector("div p"); 
+
+// // getElementById - only works with IDs
+// const buttonById = document.getElementById("btn");
+// console.log(buttonById);
+// console.log(buttonById === button); 
+
+// // querySelectorAll - gets ALL matching elements
+// const allParagraphs = document.querySelectorAll("p");
+// console.log(allParagraphs); // NodeList (like an array)
+// console.log(allParagraphs[0]); // First paragraph
+// console.log(allParagraphs.length);
+
+// // Practice selecting elements:
+// // 1. Select the element with class 'guess' and log it
+// // 2. Select the element with ID 'btn' using both querySelector and getElementById
+// // 3. Select all span elements and log the collection
+// // 4. Select the first span element and log its textContent
+// // 5. Experiment with different CSS selectors
+// // Your code here...
+// const guessInput = document.querySelector(".guess");
+// console.log(guessInput);
+
+// const buttonQuery = document.querySelector("#btn");
+
+// const buttonById2 = document.getElementById("btn");
+// console.log(buttonQuery === buttonById2); 
+
+// const allSpans = document.querySelectorAll("span");
+// console.log(allSpans);
+
+// const firstSpan = document.querySelector("span");
+// console.log(firstSpan.textContent);
+
+// // Modifying Element Content
+// // Text Content Methods
+// const message2 = document.querySelector(".message");
+
+// // textContent - gets/sets just the text, no HTML
+// console.log(message2.textContent); // "Start interacting!"
+// message2.textContent = "Hello from JavaScript!";
+
+// // innerHTML - includes HTML tags (more powerful but be careful)
+// message2.innerHTML = "<strong>Bold text from JS!</strong>";
+
+// // innerText - respects styling (what user actually sees)
+// console.log(message2.innerText);
+
+// // Input elements use .value property, not textContent
+// const input2 = document.querySelector(".guess");
+// console.log(input2.value); 
+// input2.value = "Hello World"; 
+// input2.placeholder = "Hi there!";
+
+// Dynamic Style Changes
+// Changing element styles with the style property
+// const heading = document.querySelector("h1");
+
+// heading.style.color = "red";
+// heading.style.backgroundColor = "yellow"; // Note: camelCase!
+// heading.style.fontSize = "3rem";
+// heading.style.padding = "20px";
+// heading.style.borderRadius = "10px";
+
+//Exercise 2: Content and Style Practice
+// Practice content and style manipulation:
+// 1. Change the h1 text to your name
+// 2. Make the button's background color blue and text white
+// 3. Set a placeholder text in the input field
+// 4. Change the message text to include HTML bold formatting
+// 5. Make the score display larger and a different color
+
+// Your code here...
+// const heading = document.querySelector("h1");
+// const button = document.querySelector("#btn");
+// const input = document.querySelector(".guess");
+// const message = document.querySelector(".message");
+// const scoreValue = document.querySelector(".score-value");
+
+// heading.textContent = "Yhuna Villas";
+
+// button.style.backgroundColor = "pink";
+// button.style.color = "white";
+// button.style.padding = "10px 20px";
+// button.style.border = "none";
+// button.style.borderRadius = "5px";
+
+// input.placeholder = "What is your spirit animal?";
+
+// message.innerHTML = "This is <strong>bold</strong> text from JavaScript!";
+
+// scoreValue.style.fontSize = "2rem";
+// scoreValue.style.color = "black";
+// scoreValue.style.fontWeight = "bold";
+
+//Click Events
+// Event Listeners - User Interaction
+// const button = document.querySelector("#btn");
+// const message = document.querySelector(".message");
+// // addEventListener - the modern way to handle events
+// button.addEventListener("click", function () {
+//   console.log("Button was clicked!");
+//   message.textContent = "You clicked the button!";
+//   message.style.color = "pink";
+// });
+
+// //Event Listener Syntax
+// const element = document.querySelector("#btn");
+// element.addEventListener("click", function () {
+//   console.log("Button was clicked!");
+// });
+
+// //CLick Counter Example
+// // Event listener with state management
+// let clickCount = 0;
+
+// button.addEventListener("click", function () {
+//   clickCount++;
+//   button.textContent = `Clicked ${clickCount} times`;
+//   button.style.backgroundColor = `hsl(${clickCount * 30}, 70%, 50%)`;
+// });
+
+// //Input Events - Real-time Typing Response
+
+// // Input events fire every time user types
+// const input = document.querySelector(".guess");
+
+// input.addEventListener("input", function () {
+//   const userText = input.value;
+//   message.textContent = `You typed: ${userText}`;
+//   message.style.fontSize = `${userText.length + 10}px`;
+//   console.log(userText);
+// });
+
+// // Keyboard events - responding to specific keys
+// input.addEventListener("keydown", function (event) {
+//   console.log(`Key pressed: ${event.key}`);
+
+//   if (event.key === "Enter") {
+//     message.textContent = `You pressed Enter! Text was: ${input.value}`;
+//     input.value = ""; // Clear input
+//   }
+// });
+
+// // Global keyboard events
+// document.addEventListener("keydown", function (event) {
+//   if (event.key === "Escape") {
+//     // Reset everything
+//     message.textContent = "Reset with Escape key!";
+//     input.value = "";
+//     clickCount = 0;
+//     button.textContent = "Click Me!";
+//   }
+// });
+
+
+//Exercise 3: Event Listener Practice
+// Practice event listeners:
+// 1. Add a click event to the h1 that changes its color
+// 2. Create an input event that displays character count as user types
+// 3. Add a keydown event that responds to the spacebar
+// 4. Make the button change its text when hovered (mouseover event)
+// 5. Create a double-click event that does something special
+
+// Your code here...
+const heading = document.querySelector("h1");
+const input = document.querySelector(".guess");
+const button = document.querySelector("#btn");
+const message = document.querySelector(".message");
+
+heading.addEventListener("click", function () {
+  heading.style.color = "pink";
+});
+
+input.addEventListener("input", function () {
+  const count = input.value.length;
+  message.textContent = `Character count: ${count}`;
+});
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === " ") {
+    message.textContent = "Spacebar pressed!";
+  }
+});
+
+button.addEventListener("mouseover", function () {
+  button.textContent = "Mouse Over!";
+});
+
+button.addEventListener("mouseout", function () {
+  button.textContent = "Click Me!";
+});
+
+heading.addEventListener("dblclick", function () {
+  heading.textContent = "Double-clicked!";
+  heading.style.backgroundColor = "lightblue";
+});
