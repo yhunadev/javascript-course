@@ -67,9 +67,9 @@ Add this to understand our starting point:
 
 ```javascript
 // Developer Skills Hour 3 - Research Skills & Debugging Fundamentals
-"use strict";
+'use strict';
 
-console.log("=== HOUR 3: RESEARCH & DEBUGGING MASTERY ===");
+console.log('=== HOUR 3: RESEARCH & DEBUGGING MASTERY ===');
 
 /*
 Random Googling vs Strategic Research:
@@ -90,10 +90,10 @@ STRATEGIC RESEARCH (Professional Approach):
 */
 
 console.log(
-  "Goal: Master research and debugging like a professional developer"
+  'Goal: Master research and debugging like a professional developer'
 );
 console.log(
-  "Strategic research builds lasting knowledge, not just quick fixes"
+  'Strategic research builds lasting knowledge, not just quick fixes'
 );
 ```
 
@@ -179,7 +179,7 @@ function demonstrateArrayMax(numbers) {
 // Test our research with sample data
 const testNumbers = [3, 7, 2, 9, 1, 5];
 const maxResults = demonstrateArrayMax(testNumbers);
-console.log("Multiple approaches from research:", maxResults);
+console.log('Multiple approaches from research:', maxResults);
 ```
 
 ### **Stack Overflow Best Practices**
@@ -209,23 +209,23 @@ Research question: "How to reverse a string in JavaScript?"
 
 function reverseStringMethods(str) {
   // Method 1 - Most common Stack Overflow solution
-  const method1 = str.split("").reverse().join("");
+  const method1 = str.split('').reverse().join('');
 
   // Method 2 - Manual loop approach (educational)
-  let method2 = "";
+  let method2 = '';
   for (let i = str.length - 1; i >= 0; i--) {
     method2 += str[i];
   }
 
   // Method 3 - Modern spread operator approach
-  const method3 = [...str].reverse().join("");
+  const method3 = [...str].reverse().join('');
 
   return { method1, method2, method3 };
 }
 
 // Test our Stack Overflow research results
-const reverseResults = reverseStringMethods("hello");
-console.log("Stack Overflow research results:", reverseResults);
+const reverseResults = reverseStringMethods('hello');
+console.log('Stack Overflow research results:', reverseResults);
 ```
 
 ### **MDN Documentation Mastery**
@@ -263,13 +263,13 @@ function demonstrateConcat() {
   const multiple = array1.concat(array2, array3);
 
   // Verify concat doesn't modify original arrays
-  console.log("Original array1 unchanged:", array1);
+  console.log('Original array1 unchanged:', array1);
 
   return { simple, multiple };
 }
 
 const concatResults = demonstrateConcat();
-console.log("MDN documentation applied:", concatResults);
+console.log('MDN documentation applied:', concatResults);
 ```
 
 ## 🐛 Section 2: Systematic Debugging Process
@@ -340,7 +340,7 @@ function calculateAverageScore(scores) {
 // Test the buggy function
 const testScores = [85, 92, 78, 96, 88];
 const buggyResult = calculateAverageScore(testScores);
-console.log("Buggy result:", buggyResult); // Will show NaN or incorrect value
+console.log('Buggy result:', buggyResult); // Will show NaN or incorrect value
 ```
 
 **Can you identify the three bugs?**
@@ -366,12 +366,12 @@ console.log("Buggy result:", buggyResult); // Will show NaN or incorrect value
 // BROWSER DEVELOPER TOOLS MASTERY
 
 function demonstrateConsoleDebugging(data) {
-  console.group("Debugging Session");
+  console.group('Debugging Session');
 
-  console.log("Input data:", data);
+  console.log('Input data:', data);
 
-  if (typeof data !== "object") {
-    console.warn("Warning: Expected object, got", typeof data);
+  if (typeof data !== 'object') {
+    console.warn('Warning: Expected object, got', typeof data);
   }
 
   console.table(data);
@@ -382,7 +382,7 @@ function demonstrateConsoleDebugging(data) {
 
 // Test console debugging with different data types
 const arrayData = [1, 2, 3, 4, 5];
-const objectData = { name: "John", age: 30, city: "New York" };
+const objectData = { name: 'John', age: 30, city: 'New York' };
 
 demonstrateConsoleDebugging(arrayData);
 demonstrateConsoleDebugging(objectData);
@@ -405,7 +405,7 @@ function stepThroughDebugging(numbers) {
 
     console.log(`Processing index ${i}: value = ${currentNumber}`);
 
-    if (typeof currentNumber === "number") {
+    if (typeof currentNumber === 'number') {
       sum += currentNumber;
       count++;
     } else {
@@ -414,15 +414,15 @@ function stepThroughDebugging(numbers) {
   }
 
   const average = count > 0 ? sum / count : 0;
-  console.log("Final results:", { sum, count, average });
+  console.log('Final results:', { sum, count, average });
 
   return average;
 }
 
 // Test debugging function - open dev tools to see debugger in action
-const mixedNumbers = [10, 20, "error", 30, null, 40];
+const mixedNumbers = [10, 20, 'error', 30, null, 40];
 const debugResult = stepThroughDebugging(mixedNumbers);
-console.log("Debug session result:", debugResult);
+console.log('Debug session result:', debugResult);
 ```
 
 **To use the debugger:**
@@ -473,7 +473,7 @@ STEP 5: PREVENT ✅
 function calculateAverageScoreFixed(scores) {
   // STEP 5 - PREVENT: Add input validation
   if (!Array.isArray(scores) || scores.length === 0) {
-    console.error("Invalid input: scores must be a non-empty array");
+    console.error('Invalid input: scores must be a non-empty array');
     return 0;
   }
 
@@ -484,7 +484,7 @@ function calculateAverageScoreFixed(scores) {
   for (let i = 0; i < scores.length; i++) {
     // FIXED: < instead of <=
     // STEP 5 - PREVENT: Add type checking
-    if (typeof scores[i] === "number") {
+    if (typeof scores[i] === 'number') {
       total += scores[i];
     } else {
       console.warn(`Skipping non-number value at index ${i}:`, scores[i]);
@@ -497,7 +497,7 @@ function calculateAverageScoreFixed(scores) {
 
 // Test the fixed function
 const fixedResult = calculateAverageScoreFixed(testScores);
-console.log("Fixed result:", fixedResult); // Should show correct average: 87.8
+console.log('Fixed result:', fixedResult); // Should show correct average: 87.8
 ```
 
 ### **Comprehensive Testing**
@@ -506,31 +506,31 @@ Test your debugging skills with various scenarios:
 
 ```javascript
 // Comprehensive debugging verification
-console.group("Debugging Verification Tests");
+console.group('Debugging Verification Tests');
 
 // Test 1 - Normal case
 const normalScores = [85, 92, 78, 96, 88];
 const normalResult = calculateAverageScoreFixed(normalScores);
-console.log("Normal case result:", normalResult);
+console.log('Normal case result:', normalResult);
 
 // Test 2 - Edge case with invalid data
-const mixedScores = [85, "invalid", 92, null, 78];
+const mixedScores = [85, 'invalid', 92, null, 78];
 const mixedResult = calculateAverageScoreFixed(mixedScores);
-console.log("Mixed data result:", mixedResult);
+console.log('Mixed data result:', mixedResult);
 
 // Test 3 - Error case with invalid input
-const errorResult = calculateAverageScoreFixed("not an array");
-console.log("Error case result:", errorResult);
+const errorResult = calculateAverageScoreFixed('not an array');
+console.log('Error case result:', errorResult);
 
 // Test 4 - Edge case with empty array
 const emptyResult = calculateAverageScoreFixed([]);
-console.log("Empty array result:", emptyResult);
+console.log('Empty array result:', emptyResult);
 
 console.groupEnd();
 
-console.log("Systematic debugging process successfully applied!");
+console.log('Systematic debugging process successfully applied!');
 console.log(
-  "All bugs identified, isolated, investigated, fixed, and prevented"
+  'All bugs identified, isolated, investigated, fixed, and prevented'
 );
 ```
 
