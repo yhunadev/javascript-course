@@ -1,4 +1,5 @@
 'use strict';
+
 //CONSTANTS VARIABLE
 const MIN_NUMBER = 1;
 const MAX_NUMBER = 20;
@@ -55,6 +56,7 @@ function renderInitialUI() {
   setMessage('Start guessing...');
   setNumber('?');
   setScore(score);
+  clearInput();
   disablePlay(false);
   setBackground('');
 }
@@ -64,68 +66,47 @@ checkBtnEl.addEventListener('click', function () {
   const guess = Number(guessEl);
 
   //check if our guess input value is empty
-  if (!guess) {
-    return setMessage('No message');
-  }
-  if (guess < 1 || guess > 20) {
-    document.querySelector('.message').textContent =
-      'Number must be between 1 and 20!🤯';
-    return;
+  if (!guess) return setMessage('Please input a number!🤨');
+
+  if (guess < MIN_NUMBER || guess > MAX_NUMBER) {
+    return setMessage(
+      `Number must be between ${MIN_NUMBER} and ${MAX_NUMBER}!`
+    );
   }
   if (guess === secretNumber) {
-    console.log('User Guessed Correctly!');
-    document.querySelector('.message').textContent = 'Correct Number!';
-    document.querySelector('.number').textContent = secretNumber;
+    setMessage('Correct Number!🎉');
+    setNumber(secretNumber);
+    setBackground('green');
     if (score > highscore) {
       highscore = score;
-      document.querySelector('.highscore').textContent = highscore;
+      setHighscore(highscore);
     }
-    document.querySelector('.message').textContent = 'You Win!';
-    document.querySelector('.guess').disabled = true;
-    document.querySelector('.check').disabled = true;
-    document.body.style.backgroundColor = 'green';
-    document.querySelector('.message').textContent = 'Game Over! You Win!😍';
-    document.querySelector('.guess').value = '';
-  } else if (guess > secretNumber) {
-    console.log('Too High!');
-    document.querySelector('.message').textContent = 'Too High!🌿';
-    score--;
-    document.querySelector('.score').textContent = score;
-    if (score < 1) {
-      document.querySelector('.message').textContent =
-        'You Lost the Game, press again!';
-      document.querySelector('.number').textContent = secretNumber;
-      document.querySelector('.guess').disabled = true;
-      document.querySelector('.check').disabled = true;
-    }
-  } else if (guess < secretNumber) {
-    console.log('Too Low!');
-    document.querySelector('.message').textContent = 'Too Low!👿';
-    score--;
-    document.querySelector('.score').textContent = score;
-    if (score < 1) {
-      document.querySelector('.message').textContent =
-        'You Lost the Game, press again!';
-      document.querySelector('.number').textContent = secretNumber;
-      document.querySelector('.guess').disabled = true;
-      document.querySelector('.check').disabled = true;
-      document.body.style.backgroundColor = 'maroon';
-      document.querySelector('.message').textContent = 'Game Over! You lost😭';
-      document.querySelector('.guess').value = '';
-    }
+    disablePlay(true);
+    clearInput();
+    return;
+  }
+
+  //when guess is wrong
+  setMessage(guess > secretNumber ? 'Too high!' : 'Too low!');
+  score--;
+  setScore(score);
+
+  if (score < 1) {
+    setMessage('Game Over! Please press again');
+    setNumber(secretNumber);
+    setBackground('red');
+    disablePlay(true);
+    clearInput();
   }
 });
 
-document.querySelector('.again').addEventListener('click', function () {
-  score = 20;
-  secretNumber = Math.trunc(Math.random() * 20) + 1;
-  //restart message display
-  document.querySelector('.message').textContent = 'Start guessing...';
-  document.querySelector('.number').textContent = '?';
-  document.querySelector('.score').textContent = score;
-  document.querySelector('.guess').value = '';
-  document.querySelector('.guess').disabled = false;
-  document.querySelector('.check').disabled = false;
-  console.log('Game Reset! New Secret Number:', secretNumber);
-  document.body.style.backgroundColor = '';
+againBtnEl.addEventListener('click', function () {
+  resetGameState();
+  renderInitialUI();
+});
+
+window.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter' && !checkBtnEl.disabled) {
+    checkBtnEl.click();
+  }
 });
