@@ -2,9 +2,6 @@
 
 console.log('Mapty OOP Foundation');
 
-// ======================
-// WORKOUT CLASSES
-// ======================
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
@@ -31,7 +28,6 @@ class Workout {
       'November',
       'December',
     ];
-
     this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
       months[this.date.getMonth()]
     } ${this.date.getDate()}`;
@@ -70,105 +66,6 @@ class Cycling extends Workout {
   }
 }
 
-// Test OOP setup
-const run1 = new Running([39.7392, -104.9903], 5.2, 24, 178);
-const cycling1 = new Cycling([39.7392, -104.9903], 27, 95, 523);
-console.log('Run example:', run1);
-console.log('Cycling example:', cycling1);
-
-// ======================
-// GEOLOCATION + FALLBACK
-// ======================
-console.log('=== TESTING GEOLOCATION API ===');
-
-function getPosition() {
-  if (navigator.geolocation) {
-    console.log('🔍 Requesting user location...');
-    navigator.geolocation.getCurrentPosition(
-      loadMap,
-      function (error) {
-        console.error('Geolocation error:', error);
-
-        let message = 'Could not get your position. ';
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            message +=
-              'Location access was denied. Please enable location services and refresh the page.';
-            break;
-          case error.POSITION_UNAVAILABLE:
-            message += 'Location information is unavailable.';
-            break;
-          case error.TIMEOUT:
-            message += 'Location request timed out.';
-            break;
-          default:
-            message += 'An unknown error occurred.';
-            break;
-        }
-
-        alert(`📍 ${message}`);
-        loadDefaultMap();
-      },
-      { timeout: 10000, enableHighAccuracy: true, maximumAge: 600000 }
-    );
-  } else {
-    alert('❌ Geolocation is not supported by this browser');
-    loadDefaultMap();
-  }
-}
-
-getPosition();
-
-function loadMap(position) {
-  const { latitude, longitude } = position.coords;
-  console.log(`Loading map at coordinates: ${latitude}, ${longitude}`);
-  const coords = [latitude, longitude];
-
-  const map = L.map('map').setView(coords, 13);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
-
-  L.marker(coords).addTo(map).bindPopup('You are here!').openPopup();
-
-  map.on('click', function (mapEvent) {
-    console.log('Map Clicked!', mapEvent);
-    const { lat, lng } = mapEvent.latlng;
-    console.log(`Clicked at: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
-    L.marker([lat, lng])
-      .addTo(map)
-      .bindPopup(`Workout at ${lat.toFixed(4)}, ${lng.toFixed(4)}`)
-      .openPopup();
-  });
-
-  console.log('Map loaded successfully at user location');
-}
-
-function loadDefaultMap() {
-  console.log('Loading default map location around Manila');
-  const defaultCoords = [14.604, 120.944];
-  const map = L.map('map').setView(defaultCoords, 13);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
-
-  map.on('click', function (mapEvent) {
-    const { lat, lng } = mapEvent.latlng;
-    L.marker([lat, lng])
-      .addTo(map)
-      .bindPopup(`Workout at ${lat.toFixed(4)}, ${lng.toFixed(4)}`)
-      .openPopup();
-  });
-  console.log('Default map loaded successfully');
-}
-
-// ======================
-// DOM ELEMENTS
-// ======================
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
 const inputType = document.querySelector('.form__input--type');
@@ -177,9 +74,6 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-// ======================
-// APP CLASS (Hour 3)
-// ======================
 class App {
   #map;
   #mapZoomLevel = 13;
@@ -189,10 +83,11 @@ class App {
   constructor() {
     console.log('App initialized 🧭');
     this._getPosition();
-
-    // Event listeners
+    this._getLocalStorage();
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+    document.addEventListener('keydown', this._cancelWorkout.bind(this));
   }
 
   _getPosition() {
@@ -208,7 +103,6 @@ class App {
   _loadMap(position) {
     const { latitude, longitude } = position.coords;
     const coords = [latitude, longitude];
-
     this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
 
     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
@@ -217,6 +111,8 @@ class App {
     }).addTo(this.#map);
 
     this.#map.on('click', this._showForm.bind(this));
+
+    this.#workouts.forEach(work => this._renderWorkoutMarker(work));
   }
 
   _showForm(mapE) {
@@ -236,6 +132,13 @@ class App {
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
+  _cancelWorkout(e) {
+    if (e.key === 'Escape' && !form.classList.contains('hidden')) {
+      e.preventDefault();
+      this._hideForm();
+    }
+  }
+
   _toggleElevationField() {
     inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
@@ -243,12 +146,9 @@ class App {
 
   _newWorkout(e) {
     e.preventDefault();
-
     const validInputs = (...inputs) =>
       inputs.every(inp => Number.isFinite(inp));
     const allPositive = (...inputs) => inputs.every(inp => inp > 0);
-
-    // Get data
     const type = inputType.value;
     const distance = +inputDistance.value;
     const duration = +inputDuration.value;
@@ -279,6 +179,7 @@ class App {
     this._renderWorkoutMarker(workout);
     this._renderWorkout(workout);
     this._hideForm();
+    this._setLocalStorage();
   }
 
   _renderWorkoutMarker(workout) {
@@ -346,12 +247,36 @@ class App {
         </div>
       </li>
       `;
-
     form.insertAdjacentHTML('afterend', html);
+  }
+
+  _moveToPopup(e) {
+    const workoutEl = e.target.closest('.workout');
+    if (!workoutEl) return;
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+    this.#map.setView(workout.coords, this.#mapZoomLevel, {
+      animate: true,
+      pan: { duration: 1 },
+    });
+  }
+
+  _setLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  }
+
+  _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts'));
+    if (!data) return;
+    this.#workouts = data;
+    this.#workouts.forEach(work => this._renderWorkout(work));
+  }
+
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 }
 
-// ======================
-// APP INSTANCE
-// ======================
 const app = new App();
